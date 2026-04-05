@@ -3,7 +3,7 @@ layout: posts
 title:  "First STM32 PCB Design in KiCad and JLCPCB Assembly: Part III - Routing"
 date:   2025-11-30 21:27:00 -0500
 categories: kicad pcb-design
-hidden: true
+hidden: false
 ---
 <!-- excerpts go here, right after the front matter -->
 These are my notes from following [Phil's Lab Tutorial](https://www.youtube.com/watch?v=C7-8nUU6e3E) on designing your first PCB in KiCad 9.0 and using JLCPCB as the assembly house.
@@ -22,6 +22,7 @@ These are my notes from following [Phil's Lab Tutorial](https://www.youtube.com/
   - [Ground and Power Nets](#ground-and-power-nets)
   - [Crystal Needs a Keepout](#crystal-needs-a-keepout)
 - [Design Rule Check](#design-rule-check)
+- [Top SilkScreen Text Aids](#top-silkscreen-text-aids)
 - [Conclusion](#conclusion)
 
 
@@ -29,7 +30,7 @@ These are my notes from following [Phil's Lab Tutorial](https://www.youtube.com/
 
 # Introduction
 
-In Part 2 we laid out the components on our PCB and finalized the shape of the board. In this module we wire up the nets.
+In Part 2 we laid out the components on our PCB and finalized the shape of the board. In this module we wire up the nets, add ground and power planes, run the Design Rule Checker, and add descriptive text to the Top Silkscreen.
 
 # Track Sizes
 
@@ -61,7 +62,7 @@ We will do the same with the Power plane
 
 1. Select the existing rectangle
 2. Hit `Ctrl+D` then click to make a copy of the rectangle
-> :warning: Note that this rectrangle will be defined for the same layer and net, `In1.Cu` and `GND`, until you change it
+> :warning: Note that this rectangle will be defined for the same layer and net, `In1.Cu` and `GND`, until you change it
 3. With the new rectangle selected, hit `E` to bring up the properties
 4. Change the layer to `In2.Cu` and the net to `+3.3V`
 5. `Edit` -> `Fill all Zones`
@@ -119,7 +120,7 @@ Now route the D+/D- pair from USB connector to the ESD chip and onto the micro
 
 Finally, we will connect the `+3V3` and `GND` nets to their respective power planes with vias
 
-1. Track drop-down menu -> Edit Pre-Selected... -> Add via sizing
+1. Track drop-down menu -> Edit Pre-defined Sizes -> Add these via sizing
     ![Via Sizing][img_via_sizes]
 1. Select the `Via` tool and drop one right atop a `+3V3` pad, it will adopt the net of the pad
 2. Drag the via just outside the pad
@@ -142,12 +143,38 @@ We need to exclude the ground plane pour underneath the crystal section, we do t
 6. Power circuitry gets extra vias per pad.
 
 We are now done routing and ready to move onto the Design Rule Check
-
+****
 ![Done Routing][img_done_routing]
 
 # Design Rule Check
+1. Click on `Design Rules Checker` -> `Run DRC
+
+    ![Design Rules Checker][img_design_rules_checker]
+
+2. Address all violations -> rerun DRC check
+3. Finally, we are left with two warnings, which we can choose to ignore
+    ![DRC Warnings][img_drc_warnings]
+
+# Top SilkScreen Text Aids
+
+It is useful to add descriptive text for each out the connectors and switches
+
+1. Click on the `Front SilkScreen` layer -> Text -> Enter label
+
+    ![Descriptive Text on Top Silkscreen][img_silk_text]
+
+2. Continue adding labels that help identify the most useful items on the board
+   1. all connectors, e.g. UART, I2C, USB
+   2. Switch positions: BOOT and RUN
+   3. LED anodes
+   4. Power terminal positive
+   5. Logo and name of the board
+
+    ![Text aids][img_text_aid]
 
 # Conclusion
+
+We have wired up our board, poured our ground and power planes, annotated parts of the board on the top silkscreen to aid the user in identifying commonly used components. We are now ready to move on to manufacturing and assembly.
 
 
 <!-- References -->
@@ -167,3 +194,7 @@ We are now done routing and ready to move onto the Design Rule Check
 [img_via_sizes]: /assets/images/2025_10_12_post_kicad_pcb_design/via_sizes.png
 [img_crystal_keepout]: /assets/images/2025_10_12_post_kicad_pcb_design/crystal_keepout.png
 [img_done_routing]: /assets/images/2025_10_12_post_kicad_pcb_design/done_routing.png
+[img_design_rules_checker]: /assets/images/2025_10_12_post_kicad_pcb_design/design_rules_checker.png
+[img_drc_warnings]: /assets/images/2025_10_12_post_kicad_pcb_design/drc_warnings.png
+[img_silk_text]: /assets/images/2025_10_12_post_kicad_pcb_design/silk_text.png
+[img_text_aid]: /assets/images/2025_10_12_post_kicad_pcb_design/text_aid.png
